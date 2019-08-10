@@ -14,25 +14,29 @@ public class ProductRepositoryImp implements ProductRepository {
 	}
 
 	public boolean crear(Product product) {
-		if (product != null) {
+		if (product != null)
 			return this.db.add(product);
-		}
 		return true;
 	}
 
 	public Product leer(Product filter) {
-		// TODO Auto-generated method stub
-		return null;
+		if (filter != null)
+			return filter;
+		else
+			return null;
 	}
 
 	public boolean actualizar(Product product) {
-		// TODO Auto-generated method stub
-		return false;
+		if (product != null)
+			if (this.db.set(this.db.indexOf(product.getCodigo()), product) != null)
+				return true;
+		return true;
 	}
 
 	public boolean borrar(Product product) {
-		// TODO Auto-generated method stub
-		return false;
+		if (product != null)
+			return this.db.remove(product);
+		return true;
 	}
 
 	public List<Product> leerTodo(Product filter) {

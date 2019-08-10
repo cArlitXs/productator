@@ -10,15 +10,16 @@ public class Product {
 	private String descripcion;
 	private IVA iva;
 	private Double precio;
-	private int stock;
-	private int vendido;
+	private Integer stock;
+	private Integer vendido;
 	private Category categoria;
 
+	public static int id = 1;
+
 //	CONSTRUCTOR
-	public Product(int codigo, String nombre, String descripcion, IVA iva, Double precio, int stock,
-			Category categoria) {
+	public Product(String nombre, String descripcion, IVA iva, Double precio, int stock, Category categoria) {
 		super();
-		this.codigo = codigo;
+		this.codigo = Product.id++;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.iva = iva;
@@ -68,7 +69,7 @@ public class Product {
 		this.precio = precio;
 	}
 
-	public int getStock() {
+	public Integer getStock() {
 		return stock;
 	}
 
@@ -76,7 +77,7 @@ public class Product {
 		this.stock = stock;
 	}
 
-	public int getVendido() {
+	public Integer getVendido() {
 		return vendido;
 	}
 
@@ -92,13 +93,12 @@ public class Product {
 		this.categoria = categoria;
 	}
 
-
 //	TO STRING
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Product [codigo=");
-		builder.append(codigo);
+		builder.append(codigoRelleno(codigo));
 		builder.append(", nombre=");
 		builder.append(nombre);
 		builder.append(", descripcion=");
@@ -115,5 +115,14 @@ public class Product {
 		builder.append(categoria);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	private String codigoRelleno(int codigo) {
+		String cadena = codigo + "";
+
+		while(cadena.length() < 4) {
+			cadena = "0" + cadena;
+		}
+		return cadena;
 	}
 }
