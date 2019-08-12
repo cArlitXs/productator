@@ -26,6 +26,7 @@ public class ProductRepositoryImp implements ProductRepository {
 			return null;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public boolean actualizar(Product product) {
 		if (product != null)
 			if (this.db.set(this.db.indexOf(product.getCodigo()), product) != null)
@@ -39,7 +40,16 @@ public class ProductRepositoryImp implements ProductRepository {
 		return true;
 	}
 
-	public List<Product> leerTodo(Product filter) {
+	public List<Product> leerTodo() {
+		List<Product> selected = new ArrayList<Product>();
+
+		for (Product p : this.db)
+				selected.add(p);
+
+		return selected;
+	}
+	
+	public List<Product> leerTodoFilter(Product filter) {
 		List<Product> selected = new ArrayList<Product>();
 
 		for (Product p : this.db)

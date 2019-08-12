@@ -10,7 +10,8 @@ public interface ProductRepository {
 	public Product leer(Product filter);
 	public boolean actualizar(Product product);
 	public boolean borrar(Product product);
-	
-	public List<Product> leerTodo(Product filter);
+
+	public List<Product> leerTodo();
+	public List<Product> leerTodoFilter(Product filter);
 
 }

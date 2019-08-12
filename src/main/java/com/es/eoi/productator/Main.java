@@ -7,40 +7,25 @@ import java.util.Scanner;
 import com.es.eoi.productator.entities.Product;
 import com.es.eoi.productator.enums.Category;
 import com.es.eoi.productator.enums.IVA;
+import com.es.eoi.productator.services.ProductServicesImp;
 
 public class Main {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 
-		List<Product> products = new ArrayList<Product>();
+		ProductServicesImp productServiceImp = new ProductServicesImp();
+		
+		productServiceImp.crear(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
+		productServiceImp.crear(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
+		productServiceImp.crear(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
+		productServiceImp.crear(new Product("Cebollas", "Cebollas para ensalada", IVA.GENERAL, 0.9, 60, Category.ALIMENTACION));
 
-		products.add(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
-		products.add(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
-		products.add(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
-		products.add(new Product("Cebollas", "Cebollas para ensalada", IVA.GENERAL, 0.9, 60, Category.ALIMENTACION));
-
-//		for (Product p : products) {
-//			System.out.println(p);
-//		}
-//
-//		System.out.println(
-//				"------------------------------------------------------------------------------------------------------------------------------------------");
-//
-//		products.remove(0002);
-//
-//		for (Product p : products) {
-//			System.out.println(p);
-//		}
-//
-//		System.out.println(
-//				"------------------------------------------------------------------------------------------------------------------------------------------");
-//
-//		products.add(new Product("Zanahorias", "Zanahorias rallada", IVA.GENERAL, 1.5, 20, Category.ALIMENTACION));
-//
-//		for (Product p : products) {
-//			System.out.println(p);
-//		}
+		
+//		products.add(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
+//		products.add(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
+//		products.add(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
+//		products.add(new Product("Cebollas", "Cebollas para ensalada", IVA.GENERAL, 0.9, 60, Category.ALIMENTACION));
 
 		Scanner scanner;
 		String input;
@@ -111,7 +96,7 @@ public class Main {
 					System.out.println("1. Alimentación");
 					System.out.println("2. Material");
 					System.out.println("3. Mecánico");
-					System.out.println("3. Lujo");
+					System.out.println("4. Lujo");
 
 					scanner = new Scanner(System.in);
 					input = scanner.nextLine();
@@ -128,16 +113,49 @@ public class Main {
 				} while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0
 						&& input.compareTo("4") != 0);
 
-				if (products.add(new Product(nombre, descripcion, iva, precio, cantidad, categoria)))
+				if (productServiceImp.crear(new Product(nombre, descripcion, iva, precio, cantidad, categoria)))
 					System.out.println("Añadido correctamente");
 
 				System.out.println("Volviendo al menú");
+				input = "";
+			}
+
+			if (input.compareTo("2") == 0) {
+				System.out.println("2");
+				input = "";
+			}
+			if (input.compareTo("3") == 0) {
+				System.out.println("3");
+				input = "";
+			}
+
+			if (input.compareTo("4") == 0) {
+				System.out.println("Escriba el código del producto que desea eliminar");
+				scanner = new Scanner(System.in);
+				input = scanner.nextLine();
+				Integer codigo = Integer.parseInt(input);
+				boolean eliminado = false;
+
+				if (codigo != null) {
+					for (Product p : productServiceImp.leerTodo()) {
+						if (codigo == p.getCodigo())
+							eliminado = productServiceImp.borrar(p);
+					}
+					if (eliminado)
+						System.out.println("Producto eliminado correctamente");
+					else
+						System.out.println("No se ha encontrado el producto");
+				}
+
+				input = "";
 			}
 
 			if (input.compareTo("5") == 0) {
-				for (Product p : products) {
-					System.out.println(p);
+				for (Product p : productServiceImp.leerTodo()) {
+					System.out.println(productServiceImp.leerTodoFilter(p));
 				}
+
+				input = "";
 			}
 
 		} while (input != null);

@@ -12,6 +12,6 @@ public interface ProductServices extends ProductRepository {
 	public boolean actualizar(Product product);
 	public boolean borrar(Product product);
 	
-	public List<Product> leerTodo(Product filter);
+	public List<Product> leerTodoFilter(Product filter);
 	
 }
