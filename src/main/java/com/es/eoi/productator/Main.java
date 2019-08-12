@@ -15,9 +15,8 @@ public class Main {
 		ProductServicesImp productServiceImp = new ProductServicesImp();
 
 		productServiceImp
-				.crear(new Product("Tomates rojos", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
-		productServiceImp
-				.crear(new Product("Tomates verdes", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
+				.crear(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
+		productServiceImp.crear(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
 		productServiceImp
 				.crear(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
 		productServiceImp
@@ -153,9 +152,6 @@ public class Main {
 							} else {
 								System.out.println("Volviendo al menú...");
 							}
-						} else {
-							System.out.println("Producto no encontrado");
-							break;
 						}
 					}
 				}
@@ -165,7 +161,7 @@ public class Main {
 
 			if (input.compareTo("5") == 0) {
 				for (Product p : productServiceImp.leerTodo()) {
-					System.out.println(productServiceImp.leerTodoFilter(p));
+					System.out.println(p);
 				}
 
 				input = "";
