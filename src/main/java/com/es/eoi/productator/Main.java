@@ -1,7 +1,5 @@
 package com.es.eoi.productator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import com.es.eoi.productator.entities.Product;
@@ -15,17 +13,15 @@ public class Main {
 	public static void main(String[] args) {
 
 		ProductServicesImp productServiceImp = new ProductServicesImp();
-		
-		productServiceImp.crear(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
-		productServiceImp.crear(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
-		productServiceImp.crear(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
-		productServiceImp.crear(new Product("Cebollas", "Cebollas para ensalada", IVA.GENERAL, 0.9, 60, Category.ALIMENTACION));
 
-		
-//		products.add(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
-//		products.add(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
-//		products.add(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
-//		products.add(new Product("Cebollas", "Cebollas para ensalada", IVA.GENERAL, 0.9, 60, Category.ALIMENTACION));
+		productServiceImp
+				.crear(new Product("Tomates rojos", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
+		productServiceImp
+				.crear(new Product("Tomates verdes", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
+		productServiceImp
+				.crear(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
+		productServiceImp
+				.crear(new Product("Cebollas", "Cebollas para ensalada", IVA.GENERAL, 0.9, 60, Category.ALIMENTACION));
 
 		Scanner scanner;
 		String input;
@@ -116,12 +112,13 @@ public class Main {
 				if (productServiceImp.crear(new Product(nombre, descripcion, iva, precio, cantidad, categoria)))
 					System.out.println("Añadido correctamente");
 
-				System.out.println("Volviendo al menú");
+				System.out.println("Volviendo al menú...");
 				input = "";
 			}
 
 			if (input.compareTo("2") == 0) {
-				System.out.println("2");
+				System.out.println("");
+
 				input = "";
 			}
 			if (input.compareTo("3") == 0) {
@@ -138,13 +135,29 @@ public class Main {
 
 				if (codigo != null) {
 					for (Product p : productServiceImp.leerTodo()) {
-						if (codigo == p.getCodigo())
-							eliminado = productServiceImp.borrar(p);
+						if (codigo == p.getCodigo()) {
+							System.out.println(p.toString());
+							System.out.println("** Recuerde que esta acción es irreversible **");
+							System.out.println("¿Está seguro?");
+							System.out.println("1. Si");
+							System.out.println("2. No");
+							scanner = new Scanner(System.in);
+							input = scanner.nextLine();
+
+							if (input.compareTo("1") == 0) {
+								eliminado = productServiceImp.borrar(p);
+								if (eliminado)
+									System.out.println("Producto eliminado correctamente");
+								else
+									System.out.println("El producto no existe");
+							} else {
+								System.out.println("Volviendo al menú...");
+							}
+						} else {
+							System.out.println("Producto no encontrado");
+							break;
+						}
 					}
-					if (eliminado)
-						System.out.println("Producto eliminado correctamente");
-					else
-						System.out.println("No se ha encontrado el producto");
 				}
 
 				input = "";
