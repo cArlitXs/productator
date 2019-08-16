@@ -1,5 +1,6 @@
 package com.es.eoi.productator;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.es.eoi.productator.entities.Product;
@@ -10,12 +11,11 @@ import com.es.eoi.productator.services.ProductServicesImp;
 public class Main {
 
 	@SuppressWarnings("resource")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		ProductServicesImp productServiceImp = new ProductServicesImp();
 
-		productServiceImp
-				.crear(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
+		productServiceImp.crear(new Product("Tomates", "Tomates rojos", IVA.GENERAL, 1.2, 100, Category.ALIMENTACION));
 		productServiceImp.crear(new Product("Tomates", "Tomates verdes", IVA.GENERAL, 1.4, 40, Category.LUJO));
 		productServiceImp
 				.crear(new Product("Patatas", "Patatas para freir", IVA.GENERAL, 1.0, 200, Category.ALIMENTACION));
@@ -61,7 +61,9 @@ public class Main {
 				System.out.println("Escriba el precio:");
 				scanner = new Scanner(System.in);
 				input = scanner.nextLine();
-				precio = Double.parseDouble(input);
+				precio = 0.0;
+				if (input.compareTo("") != 0)
+					precio = Double.parseDouble(input);
 
 				do {
 					System.out.println("Seleccione el IVA:");
@@ -84,7 +86,9 @@ public class Main {
 				System.out.println("Escriba la cantidad:");
 				scanner = new Scanner(System.in);
 				input = scanner.nextLine();
-				cantidad = Integer.parseInt(input);
+				cantidad = 0;
+				if (input.compareTo("") != 0)
+					cantidad = Integer.parseInt(input);
 
 				do {
 					System.out.println("Seleccione la categoría:");
@@ -108,20 +112,72 @@ public class Main {
 				} while (input.compareTo("1") != 0 && input.compareTo("2") != 0 && input.compareTo("3") != 0
 						&& input.compareTo("4") != 0);
 
-				if (productServiceImp.crear(new Product(nombre, descripcion, iva, precio, cantidad, categoria)))
-					System.out.println("Añadido correctamente");
+				StringBuilder builder = new StringBuilder();
+				builder.append("Product [nombre=");
+				builder.append(nombre);
+				builder.append(", descripcion=");
+				builder.append(descripcion);
+				builder.append(", iva=");
+				builder.append(iva);
+				builder.append(", precio=");
+				builder.append(precio);
+				builder.append(", stock=");
+				builder.append(cantidad);
+				builder.append(", categoria=");
+				builder.append(categoria);
+				builder.append("]");
+				System.out.println(builder.toString());
+
+				System.out.println("¿Esta informacion es correcta?");
+				System.out.println("1. Si");
+				System.out.println("2. No");
+				scanner = new Scanner(System.in);
+				input = scanner.nextLine();
+
+				if (input.compareTo("1") == 0)
+					if (productServiceImp.crear(new Product(nombre, descripcion, iva, precio, cantidad, categoria)))
+						System.out.println("Añadido correctamente");
 
 				System.out.println("Volviendo al menú...");
 				input = "";
 			}
 
 			if (input.compareTo("2") == 0) {
-				System.out.println("");
+				System.out.println("2");
 
 				input = "";
 			}
 			if (input.compareTo("3") == 0) {
-				System.out.println("3");
+				System.out.println("Escriba el código del producto que desea modificar");
+				scanner = new Scanner(System.in);
+				input = scanner.nextLine();
+
+				if (input.compareTo("") != 0) {
+					Integer codigo = Integer.parseInt(input);
+
+					if (codigo != null) {
+						for (Product p : productServiceImp.leerTodo()) {
+							if (codigo.equals(p.getCodigo())) {
+								
+								System.out.println(p.toString());
+								
+								String nombre;
+								
+								System.out.println("Escriba el nombre del producto:");
+								scanner = new Scanner(System.in);
+								input = scanner.nextLine();
+								nombre = input;
+								
+								p.setNombre(nombre);
+								
+								if(productServiceImp.actualizar(p))
+									System.out.println("Actualizado correctamente");
+							}
+						}
+					}
+				}
+
+				System.out.println("Volviendo al menú...");
 				input = "";
 			}
 
@@ -129,33 +185,35 @@ public class Main {
 				System.out.println("Escriba el código del producto que desea eliminar");
 				scanner = new Scanner(System.in);
 				input = scanner.nextLine();
-				Integer codigo = Integer.parseInt(input);
-				boolean eliminado = false;
 
-				if (codigo != null) {
-					for (Product p : productServiceImp.leerTodo()) {
-						if (codigo == p.getCodigo()) {
-							System.out.println(p.toString());
-							System.out.println("** Recuerde que esta acción es irreversible **");
-							System.out.println("¿Está seguro?");
-							System.out.println("1. Si");
-							System.out.println("2. No");
-							scanner = new Scanner(System.in);
-							input = scanner.nextLine();
+				if (input.compareTo("") != 0) {
+					Integer codigo = Integer.parseInt(input);
+					boolean eliminado = false;
 
-							if (input.compareTo("1") == 0) {
-								eliminado = productServiceImp.borrar(p);
-								if (eliminado)
-									System.out.println("Producto eliminado correctamente");
-								else
-									System.out.println("El producto no existe");
-							} else {
-								System.out.println("Volviendo al menú...");
+					if (codigo != null) {
+						for (Product p : productServiceImp.leerTodo()) {
+							if (codigo.equals(p.getCodigo())) {
+								System.out.println(p.toString());
+								System.out.println("** Recuerde que esta acción es irreversible **");
+								System.out.println("¿Está seguro?");
+								System.out.println("1. Si");
+								System.out.println("2. No");
+								scanner = new Scanner(System.in);
+								input = scanner.nextLine();
+
+								if (input.compareTo("1") == 0) {
+									eliminado = productServiceImp.borrar(p);
+									if (eliminado)
+										System.out.println("Producto eliminado correctamente");
+									else
+										System.out.println("El producto no existe");
+								}
 							}
 						}
 					}
 				}
 
+				System.out.println("Volviendo al menú...");
 				input = "";
 			}
 

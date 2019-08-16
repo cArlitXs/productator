@@ -1,5 +1,6 @@
 package com.es.eoi.productator.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.es.eoi.productator.entities.Product;
@@ -14,7 +15,7 @@ public class ProductServicesImp implements ProductServices {
 		this.myRepository = new ProductRepositoryImp();
 	}
 
-	public boolean crear(Product product) {
+	public boolean crear(Product product) throws IOException {
 		return this.myRepository.crear(product);
 	}
 
@@ -30,7 +31,7 @@ public class ProductServicesImp implements ProductServices {
 		return this.myRepository.borrar(product);
 	}
 	
-	public List<Product> leerTodo() {
+	public List<Product> leerTodo(){
 		return this.myRepository.leerTodo();
 	}
 
